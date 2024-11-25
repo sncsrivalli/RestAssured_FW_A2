@@ -9,4 +9,7 @@ public interface IConstantEndPointsAndPaths {
 	String DELETE_A_REPO = "/repos/{owner}/{repo}";
 	String LIST_USER_REPOS = "/users/{username}/repos";
 	String SEARCH_REPOS = "/search/repositories";
+	
+	String PROPERTIES_PATH = "./src/test/resources/parameters.properties";
+	String JSON_FILE_PATH = "./src/test/resources/gitRepoData.json";
 }
