@@ -9,26 +9,24 @@ import genericUtils.IConstantEndPointsAndPaths;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 
-public class ListReposForAuthUserTest extends BaseClass {
-	
+public class SearchRepoTest extends BaseClass {
+
 	@Test
-	public void listAuthUserRepos() {
+	public void searchRepos() {
 		Response response = given()
-								.auth()
-									.oauth2(property.fetchParameter("token"))
+								.queryParam("q", property.fetchParameter("q"))
 								.queryParam("sort", property.fetchParameter("sort"))
-								.queryParam("direction", property.fetchParameter("direction"))
+								.queryParam("order", property.fetchParameter("order"))
 							.when()
-								.get(IConstantEndPointsAndPaths.LIST_AUTH_USER_REPOS);
+								.get(IConstantEndPointsAndPaths.SEARCH_REPOS);
+		
 		response.then()
 					.assertThat()
 						.statusCode(200)
 						.contentType(ContentType.JSON)
 					.log().all();
 		
-		String actualOwner = response.jsonPath().get("[0].owner.login");
-		Assert.assertEquals(actualOwner, property.fetchParameter("owner"));
-		
+		String searchResult = response.jsonPath().get("items[0].description");
+		Assert.assertTrue(searchResult.toLowerCase().contains(property.fetchParameter("q")));
 	}
-
 }
